@@ -1,0 +1,26 @@
+SQL Injection (SQLi) Defense Cheatsheet
+
+1.  **Principle of Least Privilege**:
+    -   Ensure the database user used by the application has only the minimum necessary permissions.
+    -   Revoke administrative privileges (e.g., DROP, GRANT) if not needed.
+
+2.  **Prepared Statements (Parameterized Queries)**:
+    -   This is the primary defense. Never concatenate user input directly into SQL strings.
+    -   Use placeholders (e.g., `?` or `%s`) and let the database driver handle escaping.
+
+3.  **Input Validation**:
+    -   Validate all user input against a strict allowlist (e.g., email format, alphanumeric only).
+    -   Reject input that matches known attack patterns (e.g., `WAITFOR DELAY`, `UNION SELECT`), but do not rely on this as the only defense.
+
+4.  **Stored Procedures**:
+    -   Encapsulate queries within the database to prevent direct SQL manipulation, provided the procedures themselves are secure.
+
+5.  **ORM (Object-Relational Mapping)**:
+    -   Use ORMs like SQLAlchemy or Django ORM which typically handle parameterization automatically.
+
+6.  **Error Handling**:
+    -   Disable verbose error messages in production. Attackers use error details to map the database structure.
+    -   Log errors internally but show generic "Something went wrong" messages to users.
+
+7.  **Web Application Firewall (WAF)**:
+    -   Deploy a WAF to filter malicious traffic before it reaches the application.
